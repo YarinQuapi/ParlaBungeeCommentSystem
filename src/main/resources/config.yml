@@ -1,0 +1,14 @@
+#MySql credentials
+
+# MySql server IP
+MySql_Hostname: vote133.parlamentum.co.il
+# Name of the MySql database (Default: ParlaGames_proof)
+MySql_Database: ParlaGames_proof
+# MySql username
+MySql_User: ParlaGames_proof
+# MySql password
+MySql_Password: 9hKMTj83NTjrxbV
+# MySql server port (Default: 3306)
+MySql_Port: 3306
+# Use SSL?
+MySql_UseSSL: false
