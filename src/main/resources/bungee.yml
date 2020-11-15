@@ -1,3 +1,4 @@
 name: ParlaBungeeComments
 version: ${project.version}
 main: xyz.yarinlevi.parlabungeecomments.ParlaBungeeComments
+author: Quapi

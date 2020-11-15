@@ -7,10 +7,10 @@ import xyz.yarinlevi.parlabungeecomments.ParlaBungeeComments;
 import xyz.yarinlevi.parlabungeecomments.constants.SQLQueries;
 import xyz.yarinlevi.parlabungeecomments.helpers.Utilities;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 public class ProofCommand extends Command {
     public ProofCommand() {
@@ -33,16 +33,20 @@ public class ProofCommand extends Command {
                 Connection connection = ParlaBungeeComments.getInstance().getConnection();
 
                 try {
-                    preparedStatement = connection.prepareStatement(String.format("SELECT * FROM `%s` WHERE `entity`=\"%s\"", SQLQueries.Comments.table, player.getUniqueId().toString()));
+                    preparedStatement = connection.prepareStatement(String.format("SELECT * FROM `%s` WHERE `entity`=\"%s\"", SQLQueries.Comments.table, player.getUUID()));
 
                     resultSet = preparedStatement.executeQuery();
 
-                    StringBuilder stringBuilder = new StringBuilder("Comments of " + player.getName() + ": \n");
-                    while (resultSet.isBeforeFirst()) {
-                        stringBuilder.append(resultSet.getInt("id") + ", comment: " + resultSet.getString("note") + " commented by: " + resultSet.getString("staff") + " at: " + resultSet.getDate("date").toString() + "\n");
-                    }
 
-                    Utilities.sendMessage(sender, stringBuilder.toString());
+                    if(resultSet.isBeforeFirst()) {
+                        StringBuilder stringBuilder = new StringBuilder("Comments of " + player.getName() + ": \n");
+                        while (resultSet.next()) {
+                            stringBuilder.append(resultSet.getInt("id") + ", comment type:" + resultSet.getString("type") + " comment: " + resultSet.getString("note") + " commented by: " + resultSet.getString("staff") + " at: " + resultSet.getString("date") + "\n");
+                        }
+                        Utilities.sendMessage(sender, stringBuilder.toString());
+                    } else {
+                        Utilities.sendMessage(sender, "This player has no comments.");
+                    }
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
                 }
