@@ -1,7 +1,7 @@
 package xyz.yarinlevi.parlabungeecomments.constants;
 
 public class SQLQueries {
-    public static class Comments{
+    public static class Comments {
         public static final String table = "bat_comments";
 
         public static final String createTable = "CREATE TABLE IF NOT EXISTS `" + table + "` ("
@@ -31,5 +31,16 @@ public class SQLQueries {
 
         public static final String simpleTriggerCheck = "SELECT COUNT(*) FROM `" + table + "` WHERE entity = ?;";
         public static final String patternTriggerCheck = "SELECT COUNT(*) FROM `" + table + "` WHERE entity = ? && note LIKE ?;";
+    }
+
+    public static class UUIDStorage {
+        public static final String table = "parlaproof_uuid_storage";
+
+        public static final String create_table = "CREATE TABLE IF NOT EXISTS `" + table + "` (`username` VARCHAR(16) NOT NULL, `uuid` VARCHAR(99) NOT NULL)";
+
+        public static final String insert_uuid = "INSERT INTO `" + table + "` (`username`, `uuid`) VALUES (\"%s\", \"%s\")";
+        public static final String get_uuid = "SELECT * FROM `" + table + "` WHERE `username`=\"%s\"";
+
+        public static final String update_username = "UPDATE `" + table + "` SET `username`=\"%s\" WHERE `uuid`=\"%s\"";
     }
 }

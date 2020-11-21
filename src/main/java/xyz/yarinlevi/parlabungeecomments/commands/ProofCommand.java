@@ -33,7 +33,7 @@ public class ProofCommand extends Command {
                 Connection connection = ParlaBungeeComments.getInstance().getConnection();
 
                 try {
-                    preparedStatement = connection.prepareStatement(String.format("SELECT * FROM `%s` WHERE `entity`=\"%s\"", SQLQueries.Comments.table, player.getUUID()));
+                    preparedStatement = connection.prepareStatement(String.format("SELECT * FROM `%s` WHERE `entity`=\"%s\" AND `type`=\"NOTE\"", SQLQueries.Comments.table, player.getUUID()));
 
                     resultSet = preparedStatement.executeQuery();
 
@@ -41,7 +41,7 @@ public class ProofCommand extends Command {
                     if(resultSet.isBeforeFirst()) {
                         StringBuilder stringBuilder = new StringBuilder("Comments of " + player.getName() + ": \n");
                         while (resultSet.next()) {
-                            stringBuilder.append(resultSet.getInt("id") + ", comment type:" + resultSet.getString("type") + " comment: " + resultSet.getString("note") + " commented by: " + resultSet.getString("staff") + " at: " + resultSet.getString("date") + "\n");
+                            stringBuilder.append(resultSet.getInt("id")).append(", comment: ").append(resultSet.getString("note")).append(" commented by: ").append(resultSet.getString("staff")).append(" at: ").append(resultSet.getString("date")).append("\n");
                         }
                         Utilities.sendMessage(sender, stringBuilder.toString());
                     } else {

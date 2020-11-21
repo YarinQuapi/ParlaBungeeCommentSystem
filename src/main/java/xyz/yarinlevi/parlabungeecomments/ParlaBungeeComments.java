@@ -79,6 +79,7 @@ public final class ParlaBungeeComments extends Plugin {
         dataSource.addDataSourceProperty("useSSL", ssl);
 
         String sql = SQLQueries.Comments.createTable;
+        String sql2 = SQLQueries.UUIDStorage.create_table;
 
         getProxy().getScheduler().runAsync(this, new Runnable() {
             @Override
@@ -88,6 +89,7 @@ public final class ParlaBungeeComments extends Plugin {
                     connection = dataSource.getConnection();
                     Statement statement = connection.createStatement(); {
                         statement.executeUpdate(sql);
+                        statement.executeUpdate(sql2);
                     }
                     getLogger().info("MySQL Hooked!");
                 } catch (SQLException throwables) {
