@@ -1,6 +1,5 @@
 package xyz.yarinlevi.parlabungeecomments.commands;
 
-import lombok.SneakyThrows;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
@@ -22,6 +21,7 @@ public class CommentCommand extends Command {
 
     Pattern pattern = Pattern.compile("([A-z0-9])\\w+");
 
+    @SuppressWarnings("deprecation")
     @Override
     public void execute(CommandSender cmdSender, String[] args) {
         if (cmdSender instanceof ProxiedPlayer) {

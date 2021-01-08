@@ -1,15 +1,10 @@
 package xyz.yarinlevi.parlabungeecomments.commands;
 
-import com.zaxxer.hikari.util.UtilityElf;
-import lombok.SneakyThrows;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
-import net.md_5.bungee.chat.BaseComponentSerializer;
 import xyz.yarinlevi.parlabungeecomments.ParlaBungeeComments;
 import xyz.yarinlevi.parlabungeecomments.exceptions.UUIDNotFoundException;
 import xyz.yarinlevi.parlabungeecomments.helpers.Utilities;
@@ -23,13 +18,13 @@ import java.util.regex.Pattern;
 
 public class ProofCommand extends Command {
     Pattern pattern = Pattern.compile("([A-z0-9])\\w+");
-    Pattern urlPattern = Pattern.compile("https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)");
     Pattern numberPattern = Pattern.compile("([0-9])+");
 
     public ProofCommand() {
         super("proof", "parlabungeecomments.use", "lookupproof", "lookupcomments");
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void execute(CommandSender cmdSender, String[] args) {
         if (cmdSender instanceof ProxiedPlayer) {
@@ -51,8 +46,8 @@ public class ProofCommand extends Command {
                             }
                         }
 
-                        PreparedStatement preparedStatement = null;
-                        ResultSet resultSet = null;
+                        PreparedStatement preparedStatement;
+                        ResultSet resultSet;
 
                         Connection connection = ParlaBungeeComments.getInstance().getConnection();
 

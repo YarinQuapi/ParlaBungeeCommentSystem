@@ -4,7 +4,6 @@ import com.google.common.base.Preconditions;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.Getter;
 import lombok.Setter;
-import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.config.ConfigurationProvider;
@@ -31,18 +30,14 @@ public final class ParlaBungeeComments extends Plugin {
     private HikariDataSource dataSource;
     @Getter private String table;
     @Getter private Connection connection;
-    @Getter private int dataSavingThreadID;
 
     @Override
     public void onEnable() {
-        // Plugin startup logic
-
         instance = this;
 
         if (!getDataFolder().exists())
+            //noinspection ResultOfMethodCallIgnored
             getDataFolder().mkdir();
-
-        CommandSender commandSender = getProxy().getConsole();
 
         File file = new File(getDataFolder(), "config.yml");
         if (!file.exists()) {
@@ -82,19 +77,16 @@ public final class ParlaBungeeComments extends Plugin {
 
         String sql = SQLQueries.Comments.createTable;
 
-        getProxy().getScheduler().runAsync(this, new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    getLogger().warning("Please await mysql hook...");
-                    connection = dataSource.getConnection();
-                    Statement statement = connection.createStatement(); {
-                        statement.executeUpdate(sql);
-                    }
-                    getLogger().info("MySQL Hooked!");
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
+        getProxy().getScheduler().runAsync(this, () -> {
+            try {
+                getLogger().warning("Please await mysql hook...");
+                connection = dataSource.getConnection();
+                Statement statement = connection.createStatement(); {
+                    statement.executeUpdate(sql);
                 }
+                getLogger().info("MySQL Hooked!");
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
             }
         });
 
@@ -104,6 +96,10 @@ public final class ParlaBungeeComments extends Plugin {
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+        try {
+            connection.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 }
