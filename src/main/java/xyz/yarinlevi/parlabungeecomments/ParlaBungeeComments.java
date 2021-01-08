@@ -9,6 +9,7 @@ import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.config.ConfigurationProvider;
 import net.md_5.bungee.config.YamlConfiguration;
+import xyz.yarinlevi.parlabungeecomments.commands.CommentCommand;
 import xyz.yarinlevi.parlabungeecomments.commands.ProofCommand;
 import xyz.yarinlevi.parlabungeecomments.constants.SQLQueries;
 
@@ -77,9 +78,9 @@ public final class ParlaBungeeComments extends Plugin {
         dataSource.addDataSourceProperty("user", user);
         dataSource.addDataSourceProperty("password", pass);
         dataSource.addDataSourceProperty("useSSL", ssl);
+        dataSource.addDataSourceProperty("autoReconnect", true);
 
         String sql = SQLQueries.Comments.createTable;
-        String sql2 = SQLQueries.UUIDStorage.create_table;
 
         getProxy().getScheduler().runAsync(this, new Runnable() {
             @Override
@@ -89,7 +90,6 @@ public final class ParlaBungeeComments extends Plugin {
                     connection = dataSource.getConnection();
                     Statement statement = connection.createStatement(); {
                         statement.executeUpdate(sql);
-                        statement.executeUpdate(sql2);
                     }
                     getLogger().info("MySQL Hooked!");
                 } catch (SQLException throwables) {
@@ -99,6 +99,7 @@ public final class ParlaBungeeComments extends Plugin {
         });
 
         getProxy().getPluginManager().registerCommand(this, new ProofCommand());
+        getProxy().getPluginManager().registerCommand(this, new CommentCommand());
     }
 
     @Override
